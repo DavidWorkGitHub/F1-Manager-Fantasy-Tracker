@@ -1,223 +1,384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>F1 Fantasy Engine v7.5</title>
-  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&f[]=jet-brains-mono@400,700&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#f4f6fb;--surface:#ffffff;--border:rgba(0,0,0,.08);--text:#1f2937;--muted:#475569;--faint:#64748b;--red:#c1121f;--green:#15803d;--yellow:#b45309;--error:#dc2626;--radius:14px;--mono:'JetBrains Mono',ui-monospace,monospace;--body:'Satoshi',system-ui,sans-serif}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:var(--body)}
-    .header{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;background:linear-gradient(135deg,#ffffff 0%,#eef2ff 100%);border-bottom:1px solid rgba(0,0,0,.08);position:sticky;top:0;z-index:5}
-    .logo{font-size:1.55rem;font-weight:900}.logo span{color:var(--red)}.sub{font-size:.75rem;color:var(--faint)}.badge{margin-left:auto;background:var(--red);padding:.3rem .6rem;border-radius:999px;font-size:.72rem;font-weight:800;color:#fff}
-    .wrap{max-width:1360px;margin:0 auto;padding:1rem}.tabs{display:flex;gap:.2rem;overflow:auto;border-bottom:1px solid rgba(0,0,0,.08);margin:1rem 0}.tab{background:none;border:none;color:var(--faint);padding:.8rem 1rem;border-bottom:2px solid transparent;font-weight:800}.tab.active{color:var(--red);border-bottom-color:var(--red)}.hidden{display:none}
-    .notice,.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius)}.notice{padding:1rem;margin-bottom:1rem;color:#7f1d1d;border-color:rgba(193,18,31,.18);background:rgba(193,18,31,.04)}.card{padding:1rem}.grid{display:grid;gap:1rem}.grid2{grid-template-columns:1.15fr .85fr}
-    .label{display:block;margin-bottom:.5rem;font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}.help{font-size:.82rem;color:var(--faint);margin:0 0 .75rem}.input,.textarea,.select{width:100%;background:#fff;color:var(--text);border:1px solid rgba(0,0,0,.12);border-radius:10px;padding:.8rem .9rem;outline:none}.textarea{min-height:230px;resize:vertical;font-family:var(--mono);font-size:12px;line-height:1.6;color:#0f5132}
-    .actions{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;margin-top:1rem}.btn{border:none;border-radius:10px;padding:.75rem 1rem;font-weight:800}.btn.p{background:var(--red);color:#fff}.btn.g{background:transparent;color:var(--muted);border:1px solid rgba(0,0,0,.12)}.section-title{font-size:1.08rem;font-weight:800;margin:0 0 .8rem}
-    .row{display:flex;align-items:flex-start;gap:.75rem;padding:.75rem;border-radius:12px;background:rgba(0,0,0,.02);border:1px solid rgba(0,0,0,.04);margin-bottom:.45rem}.rank{width:2rem;color:var(--faint);font-family:var(--mono);font-size:12px;padding-top:.12rem}.main{flex:1}.name{display:flex;align-items:center;gap:.45rem;font-weight:700}.meta{font-size:12px;color:var(--faint);margin-top:.15rem}.dot{width:.55rem;height:.55rem;border-radius:999px;display:inline-block}.pill{font-family:var(--mono);font-weight:800;min-width:54px;text-align:right}
-    .chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.45rem}.chip{font-size:10px;padding:.12rem .42rem;border-radius:999px;border:1px solid rgba(0,0,0,.08)}.pos{background:rgba(21,128,61,.10);color:#166534}.neg{background:rgba(220,38,38,.10);color:#b91c1c}.neu{background:rgba(100,116,139,.10);color:#334155}
-    .bar{margin-bottom:.8rem}.barhead{display:flex;justify-content:space-between;gap:.6rem;font-size:.92rem;margin-bottom:.35rem}.track{height:6px;background:rgba(0,0,0,.08);border-radius:999px;overflow:hidden}.fill{height:100%;border-radius:999px}
-    .table{width:100%;border-collapse:collapse}.table th,.table td{padding:.65rem;border-bottom:1px solid rgba(0,0,0,.06);font-size:.9rem;text-align:left}.table th{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
-    .fine-head,.fine-row{display:grid;grid-template-columns:minmax(180px,1fr) 130px 130px 130px 130px;gap:.65rem;align-items:center}.fine-head{padding:0 0 .45rem;border-bottom:1px solid rgba(0,0,0,.08);margin-bottom:.35rem;color:var(--faint);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.fine-row{padding:.55rem 0;border-bottom:1px solid rgba(0,0,0,.06)}.fine-row:last-child{border-bottom:none}.fine-row input,.fine-row select{width:100%;background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:8px;padding:.55rem .65rem;color:var(--text)}
-    .theme-fab{position:fixed;right:16px;bottom:16px;z-index:50;border:none;border-radius:999px;padding:.85rem 1rem;background:var(--red);color:#fff;font-weight:900;box-shadow:0 8px 24px rgba(0,0,0,.18)}
-    @media (max-width:980px){.grid2{grid-template-columns:1fr}} @media (max-width:760px){.fine-head{display:none}.fine-row{grid-template-columns:1fr}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FiaFox Flashcards</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f0f1a;
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 { font-size: 1.8rem; margin-bottom: 4px; color: #ff6b35; }
+  .subtitle { color: #aaa; margin-bottom: 24px; font-size: 0.9rem; }
+  .progress { color: #aaa; margin-bottom: 16px; font-size: 0.95rem; }
+  .card-container {
+    width: 100%;
+    max-width: 680px;
+    perspective: 1200px;
+    margin-bottom: 24px;
+  }
+  .card {
+    width: 100%;
+    min-height: 260px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.55s ease;
+    cursor: pointer;
+    border-radius: 18px;
+  }
+  .card.flipped { transform: rotateY(180deg); }
+  .front, .back {
+    position: absolute;
+    width: 100%;
+    min-height: 260px;
+    border-radius: 18px;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+    text-align: center;
+  }
+  .front {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border: 2px solid #ff6b35;
+  }
+  .back {
+    background: linear-gradient(135deg, #1a2a1a, #0d2a0d);
+    border: 2px solid #4caf50;
+    transform: rotateY(180deg);
+  }
+  .tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: rgba(255,107,53,0.15);
+    color: #ff6b35;
+  }
+  .back .tag {
+    background: rgba(76,175,80,0.15);
+    color: #4caf50;
+  }
+  .question {
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #fff;
+  }
+  .answer {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #e0e0e0;
+  }
+  .answer code {
+    background: rgba(255,255,255,0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #ffd54f;
+    font-size: 0.9rem;
+  }
+  .hint {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: #888;
+  }
+  .buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  button {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-flip {
+    background: #ff6b35;
+    color: #fff;
+  }
+  .btn-flip:hover { background: #e55a25; transform: translateY(-2px); }
+  .btn-prev {
+    background: #333;
+    color: #fff;
+  }
+  .btn-prev:hover { background: #444; }
+  .btn-next {
+    background: #4caf50;
+    color: #fff;
+  }
+  .btn-next:hover { background: #388e3c; transform: translateY(-2px); }
+  .category-filter {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .cat-btn {
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid #444;
+    background: #1a1a2e;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+  }
+  .cat-btn.active {
+    background: #ff6b35;
+    color: #fff;
+    border-color: #ff6b35;
+  }
+  .score-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: #aaa;
+  }
+  .score-bar span { color: #fff; font-weight: 700; }
+</style>
 </head>
 <body>
-<header class="header"><div><div class="logo">F1 <span>Fantasy</span> Engine</div><div class="sub">Score · Analyse · Track</div></div><div class="badge">V7.5 PREVIEW</div></header>
-<main class="wrap">
-<div class="notice">Clean version: light mode by default, no Race Series tab, and a single Statistics page.</div>
-<div class="tabs">
-  <button class="tab active" data-tab="input">📋 Input</button>
-  <button class="tab" data-tab="results">🏁 Results</button>
-  <button class="tab" data-tab="season">🏆 Season</button>
-  <button class="tab" data-tab="stats">📊 Statistics</button><button class="tab" data-tab="rules">📘 Rules</button>
+
+<h1>🦊 FiaFox Flashcards</h1>
+<p class="subtitle">Advanced Database & Analytics — Demo Prep</p>
+
+<div class="category-filter" id="catFilter"></div>
+
+<div class="score-bar">
+  Studied: <span id="studiedCount">0</span> / <span id="totalCount">0</span>
 </div>
-<section id="tab-input">
-  <div class="grid grid2">
-    <div class="card">
-      <label class="label">Classification Input</label>
-      <p class="help">Paste the race classification here.</p>
-      <textarea id="raceInput" class="textarea">1  1  Max Verstappen  Red Bull  1:29:07.525
-2  2  Sergio Perez  Red Bull  +2.123s
-3  3  Charles Leclerc  Ferrari  +8.440s
-4  5  Carlos Sainz  Ferrari  +12.000s
-5  4  Lando Norris  McLaren  +14.500s
-6  6  George Russell  Mercedes  +19.200s
-7  8  Lewis Hamilton  Mercedes  +21.000s
-8  7  Oscar Piastri  McLaren  +24.000s
-DNF  10  Fernando Alonso  Aston Martin  Engine
-9  9  Alex Albon  Williams  +1 Lap</textarea>
-    </div>
-    <div class="grid">
-      <div class="card"><label class="label">Round Name</label><input id="roundName" class="input" value="Bahrain Grand Prix"></div>
-      <div class="card" style="margin-top:1rem"><label class="label">Weekend Mode</label><select id="eventMode" class="select"><option value="race">Normal Race</option><option value="sprint">Sprint</option></select></div>
-      <div class="card" style="margin-top:1rem"><label class="label">Fastest Lap Driver</label><select id="fastestLapDriver" class="select"><option value="">None</option></select></div>
-      <div class="card" style="margin-top:1rem"><label class="label">Driver of the Day</label><select id="dotdDriver" class="select"><option value="">None</option></select></div>
-      <div class="card" style="margin-top:1rem"><label class="label">Constructor Pit Stop Times</label><textarea id="pitstopInput" class="textarea" style="min-height:150px">Red Bull 1.80
-Ferrari 1.90
-McLaren 1.95
-Mercedes 1.97
-Williams 2.05</textarea></div>
-    </div>
-  </div>
-  <div class="grid grid2" style="margin-top:1rem">
-    <div class="card">
-      <div class="label">Fine Tune Drivers</div>
-      <div class="fine-head"><div>Driver</div><div>Display Name</div><div>Team</div><div>Grid</div><div>Finish</div></div>
-      <div id="fineTuneList"></div>
-    </div>
-    <div class="grid">
-      <div class="card">
-        <div class="label">Constructor Qualifying Rules</div>
-        <div class="chips"><span class="chip neu">Neither Q2: -1</span><span class="chip neu">One Q2: 1</span><span class="chip neu">Both Q2: 3</span><span class="chip neu">One Q3: 5</span><span class="chip neu">Both Q3: 10</span><span class="chip neu">DSQ: -5 each</span></div>
-      </div>
-      <div class="card" style="margin-top:1rem">
-        <div class="label">Sprint Rules</div>
-        <div class="chips"><span class="chip neu">Positions gained +1</span><span class="chip neu">Positions lost -1</span><span class="chip neu">Fastest lap +5</span><span class="chip neu">Result 8-7-6-5-4-3-2-1</span><span class="chip neu">DNF/DSQ/NC -10</span></div>
-      </div>
-      <div class="actions" style="margin-top:1rem"><button class="btn p" id="saveFineTunes">💾 Save Fine‑Tune Changes</button></div>
-    </div>
-  </div>
-  <div class="actions"><button class="btn p" id="previewBtn">Preview Results →</button><button class="btn g" id="clearBtn">Clear</button><span id="parsedCount" style="color:var(--muted)">Ready to parse.</span></div><div id="validationSummary" class="notice" style="margin-top:1rem;display:none"></div>
-</section>
-<section id="tab-results" class="hidden">
-  <div class="grid grid2">
-    <div class="card"><div class="section-title">🏆 Driver Leaderboard</div><div id="driverBoard"></div></div>
-    <div class="grid">
-      <div class="card"><div class="section-title">🔧 Event Constructor Standings</div><div id="constructorBoard"></div></div>
-      <div class="card"><div class="section-title">🏎️ Constructor Dashboard</div><div id="constructorDashboard"></div></div><div class="card"><div class="section-title">🧮 Constructor Breakdown</div><div id="constructorBreakdown"></div></div>
-      <div class="card"><div class="section-title">⚡ Pit Stop Breakdown</div><div id="pitstopBoard"></div></div>
-      <div class="card"><div class="section-title">📊 Event Stats</div><div class="grid" id="raceStats"></div></div><div class="card"><div class="section-title">🪄 Score Legend</div><div id="scoreLegend"></div></div>
-      <div class="actions"><button class="btn p" id="saveBtn">💾 Save to Season</button></div>
-    </div>
-  </div>
-</section>
-<section id="tab-season" class="hidden">
-  <div class="grid grid2">
-    <div class="card"><div class="section-title">🏆 Driver Championship</div><div id="seasonDrivers"></div></div>
-    <div class="grid">
-      <div class="card"><div class="section-title">🔧 Constructor Championship</div><div id="seasonConstructors"></div></div>
-      <div class="card"><div class="section-title">📋 Round History</div><p class="help">Saved rounds appear here. Use delete to remove bad parses or duplicates.</p><div id="roundHistory"></div></div>
-    </div>
-  </div>
-</section>
-<section id="tab-stats" class="hidden">
-  <div class="grid grid2">
-    <div class="card"><div class="section-title">📊 Statistics - Drivers</div><div id="driverStatsList"></div></div>
-    <div class="card"><div class="section-title">📊 Statistics - Constructors</div><div id="constructorStatsList"></div></div>
-  </div>
-</section>
-<section id="tab-rules" class="hidden">
-  <div class="grid grid2">
-    <div class="card">
-      <div class="section-title">📘 Race Rules</div>
-      <div id="rulesRace"></div>
-    </div>
-    <div class="card">
-      <div class="section-title">📘 Sprint & Constructor Rules</div>
-      <div id="rulesSprint"></div>
-    </div>
-  </div>
-</section>
-</main>
-<button id="themeFab" class="theme-fab">🌙 Dark</button>
-<script>
-const RACE_POINTS=[25,18,15,12,10,8,6,4,2,1], QUALI_POINTS=[10,9,8,7,6,5,4,3,2,1], SPRINT_POINTS=[8,7,6,5,4,3,2,1];
-const TEAM_COLORS={"Red Bull":"#3671C6","Mercedes":"#27F4D2","McLaren":"#FF8000","Ferrari":"#E8002D","Williams":"#64C4FF","Aston Martin":"#229971","Racing Bulls":"#6692FF","RB":"#6692FF","Kick Sauber":"#52E252","Sauber":"#52E252","Audi":"#52E252","Cadillac":"#C1121F","Haas":"#B6BABD","Alpine":"#FF87BC"};
-const TEAM_ALIASES={"Red Bull Racing":"Red Bull","Mercedes AMG":"Mercedes","Aston Martin Aramco":"Aston Martin","Visa Cash App Racing Bulls":"Racing Bulls","RB":"Racing Bulls","Kick Sauber":"Audi","Sauber":"Audi","Audi Revolut":"Audi","Cadillac F1 Team":"Cadillac","Alpine F1 Team":"Alpine","Haas F1 Team":"Haas","McLaren":"McLaren","Ferrari":"Ferrari","Williams":"Williams"};
-const KNOWN_TEAMS=Object.keys(TEAM_COLORS).sort((a,b)=>b.length-a.length);
-let season=[], manualEdits={}, lastRaceSignature='';
-const $=id=>document.getElementById(id); const els={raceInput:$('raceInput'),roundName:$('roundName'),eventMode:$('eventMode'),fastestLapDriver:$('fastestLapDriver'),dotdDriver:$('dotdDriver'),pitstopInput:$('pitstopInput'),parsedCount:$('parsedCount'),fineTuneList:$('fineTuneList'),driverBoard:$('driverBoard'),constructorBoard:$('constructorBoard'),constructorBreakdown:$('constructorBreakdown'),pitstopBoard:$('pitstopBoard'),raceStats:$('raceStats'),seasonDrivers:$('seasonDrivers'),seasonConstructors:$('seasonConstructors'),roundHistory:$('roundHistory'),saveFineTunes:$('saveFineTunes'),saveBtn:$('saveBtn')};
-function applyTheme(m){document.body.classList.toggle('light',m==='light'); const b=document.getElementById('themeFab'); if(b) b.textContent=m==='light'?'☀️ Light':'🌙 Dark'; localStorage.setItem('f1-theme',m)}
-applyTheme(localStorage.getItem('f1-theme')||'light'); document.getElementById('themeFab').onclick=()=>applyTheme(document.body.classList.contains('light')?'dark':'light');
-const teamColor=t=>TEAM_COLORS[t]||'#94a3b8';
-function parseFIA(raw){if(!raw.trim()) return []; const lines=raw.split('\n').map(l=>l.trim()).filter(Boolean), out=[], posPattern=/^(NC|DNF|DNS|DSQ|\d{1,2})\b/i; let i=0; while(i<lines.length){const line=lines[i], m=line.match(posPattern); if(!m){i++;continue;} const posRaw=m[1].toUpperCase(), dnf=/NC|DNF|DNS|DSQ/.test(posRaw), dsq=/DSQ/.test(posRaw), pos=dnf?null:parseInt(posRaw,10); const block=[line]; let j=i+1; while(j<lines.length && !lines[j].match(posPattern)){block.push(lines[j]); j++;} const full=block.join(' '); const found=KNOWN_TEAMS.find(t=>full.includes(t)); const team=TEAM_ALIASES[found]||found||'Unknown'; let name=full.replace(posPattern,'').replace(found||'','').replace(/\+[\d:.]+s?/g,'').replace(/\d+\s*Laps?/gi,'').replace(/Retired|Accident|Engine|Hydraulics|Gearbox|Mechanical|Collision|Brakes|Power\s*Unit|Electrical|Disqualified|DQ/gi,'').replace(/[^\w\s'-]/g,' ').replace(/\s+/g,' ').trim(); name=name.replace(/\b(Alfa|Cadillac|Mercedes|Ferrari|McLaren|Williams|Aston|Martin|Red|Bull|Alpine|Haas|Audi|Sauber|Racing|Bulls|RB)\b/gi,' ').replace(/\s+/g,' ').trim(); const words=name.split(/\s+/).filter(w=>w.length>1); name=words.slice(0,3).join(' ')||'Unknown'; let grid=null; const nums=[...full.matchAll(/\b(\d{1,2})\b/g)].map(x=>parseInt(x[1],10)).filter(n=>n>=1&&n<=22); const candidates=nums.filter(n=>n!==pos); if(candidates.length) grid=candidates[0]; out.push({pos,grid,name,team,dnf,dsq,overtakes:0}); i=j;} return out;}
-function parsePitstops(raw){return raw.split('\n').map(l=>l.trim()).filter(Boolean).map(line=>{const m=line.match(/^(.*?)(\d+(?:\.\d+)?)$/); return m?{team:m[1].trim(),time:parseFloat(m[2])}:null}).filter(Boolean)}
-function pitstopPoints(t){ if(t<=1.80) return 20; if(t<=1.90) return 15; if(t<=1.95) return 10; if(t<=1.97) return 5; return 2; }
-function calcPitstops(list){const s=list.map(x=>({...x,pts:pitstopPoints(x.time),fastest:false})); if(s.length){const min=Math.min(...s.map(x=>x.time)); const w=s.find(x=>x.time===min); if(w){w.fastest=true; w.pts+=5;}} return s}
-function constructorQualiBonus(ds){ const q2=ds.filter(d=>(d.grid||99)<=15).length; const q3=ds.filter(d=>(d.grid||99)<=10).length; if(q3===2) return 10; if(q3===1) return 5; if(q2===2) return 3; if(q2===1) return 1; return -1; }
-function syncManualEdit(name,key,val){ if(!manualEdits[name]) manualEdits[name]={}; manualEdits[name][key]=['displayName','manualTeam'].includes(key)?val:(val===''?null:Number(val)); render(false); }
-window.syncManualEdit=syncManualEdit;
-function getDrivers(){ const sig=els.raceInput.value.trim(); if(sig!==lastRaceSignature){manualEdits={}; lastRaceSignature=sig;} const drivers=parseFIA(els.raceInput.value).map(d=>{const e=manualEdits[d.name]||{}; return {...d,displayName:e.displayName||d.name,manualTeam:e.manualTeam,grid:e.grid!==undefined?e.grid:d.grid,pos:e.pos!==undefined?e.pos:d.pos,overtakes:e.overtakes!==undefined?e.overtakes:0};}); const cur=els.dotdDriver.value; els.dotdDriver.innerHTML='<option value="">None</option>'+drivers.map(d=>`<option value="${d.name}">${d.name}</option>`).join(''); if(drivers.some(d=>d.name===cur)) els.dotdDriver.value=cur; const fl=els.fastestLapDriver; if(fl){const fcur=fl.value; fl.innerHTML='<option value="">None</option>'+drivers.map(d=>`<option value="${d.name}">${d.name}</option>`).join(''); if(drivers.some(d=>d.name===fcur)) fl.value=fcur;} return drivers; }
-function calcDriver(d, mode){ let total=0, b=[]; if(mode==='race'){ if(d.grid && d.grid<=10){ total+=QUALI_POINTS[d.grid-1]; b.push(['Quali',QUALI_POINTS[d.grid-1],'pos']); } if(d.dnf){ total-=20; b.push(['DNF/NC',-20,'neg']); return {total,b}; } if(d.pos && d.pos<=10){ total+=RACE_POINTS[d.pos-1]; b.push(['Race',RACE_POINTS[d.pos-1],'pos']); } const delta=(d.grid!=null && d.pos!=null)?(d.grid-d.pos):0; if(delta){ total+=delta; b.push(['Pos change',delta,delta>0?'pos':'neg']); } if(d.name.toLowerCase()===(els.fastestLapDriver.value||'').trim().toLowerCase()){ total+=10; b.push(['FL',10,'pos']); } if(d.name===els.dotdDriver.value){ total+=10; b.push(['DOTD',10,'pos']); } }
- if(mode==='sprint'){ if(d.dnf){ total-=10; b.push(['DNF/DSQ/NC',-10,'neg']); return {total,b}; } if(d.pos && d.pos<=8){ total+=SPRINT_POINTS[d.pos-1]; b.push(['Sprint',SPRINT_POINTS[d.pos-1],'pos']); } const delta=(d.grid!=null && d.pos!=null)?(d.grid-d.pos):0; if(delta){ total+=delta; b.push(['Pos change',delta,delta>0?'pos':'neg']); } if((d.overtakes||0)>0){ total+=d.overtakes; b.push(['OTK',d.overtakes,'pos']); } if(d.name.toLowerCase()===(els.fastestLapDriver.value||'').trim().toLowerCase()){ total+=5; b.push(['FL',5,'pos']); } if(d.name===els.dotdDriver.value){ total+=10; b.push(['DOTD',10,'pos']); } }
- return {total,b}; }
-function getState(){ const mode=els.eventMode.value; const drivers=getDrivers().map(d=>({...d,fastestLap:d.name.toLowerCase()===(els.fastestLapDriver.value||'').trim().toLowerCase(),dotd:d.name===els.dotdDriver.value})).map(d=>{const s=calcDriver(d, mode); return {...d,score:s.total,scoring:s};}).sort((a,b)=>b.score-a.score); const byTeam={}; drivers.forEach(d=>{ if(!byTeam[d.manualTeam||d.team]) byTeam[d.manualTeam||d.team]=[]; byTeam[d.manualTeam||d.team].push(d); }); const pitstops=mode==='race'?calcPitstops(parsePitstops(els.pitstopInput.value)):[]; const constructorRows=Object.entries(byTeam).map(([team, ds])=>{ const driverTotal=ds.reduce((a,d)=>a+d.score,0); const bonus=mode==='race'?constructorQualiBonus(ds):0; const dsqPenalty=ds.filter(d=>d.dsq).length * (mode==='race'?-5:-10); const pitTotal=mode==='race'?(pitstops.find(p=>p.team===team)?.pts)||0:0; return {team,score:driverTotal+bonus+dsqPenalty+pitTotal,driverTotal,bonus,dsqPenalty,pitTotal}; }).sort((a,b)=>b.score-a.score); return {mode,drivers,pitstops,constructors:constructorRows}; }
-function renderFineTune(drivers){ if(!drivers.length){els.fineTuneList.innerHTML='<div style="color:var(--muted)">Paste classification text first.</div>'; return;} const teams=['','Red Bull','Mercedes','McLaren','Ferrari','Williams','Aston Martin','Racing Bulls','Audi','Cadillac','Haas','Alpine']; els.fineTuneList.innerHTML=drivers.map(d=>`<div class="fine-row"><div><div class="name"><span class="dot" style="background:${teamColor(d.manualTeam||d.team)}"></span>${d.name}</div><div class="meta">${d.team}</div></div><div><input type="text" value="${d.displayName||d.name}" oninput="syncManualEdit(${JSON.stringify(d.name)},'displayName',this.value)"></div><div><select oninput="syncManualEdit(${JSON.stringify(d.name)},'manualTeam',this.value)">${teams.map(t=>`<option value="${t}"${(d.manualTeam||d.team)===t?' selected':''}>${t||'Auto'}</option>`).join('')}</select></div><div><input type="number" value="${d.grid??''}" oninput="syncManualEdit(${JSON.stringify(d.name)},'grid',this.value)"></div><div><input type="number" value="${d.pos??''}" oninput="syncManualEdit(${JSON.stringify(d.name)},'pos',this.value)"></div></div>`).join(''); }
 
-function renderRulesTab(){
-  const race=document.getElementById('rulesRace');
-  const sprint=document.getElementById('rulesSprint');
-  if(race) race.innerHTML=`<div class="chips"><span class="chip neu">Quali Pts: 10-9-8-7-6-5-4-3-2-1</span><span class="chip neu">Race Pts: 25-18-15-12-10-8-6-4-2-1</span><span class="chip neu">DNF: -20</span><span class="chip neu">Fastest Lap: +10</span><span class="chip neu">DOTD: +10</span></div>`;
-  if(sprint) sprint.innerHTML=`<div class="chips"><span class="chip neu">Sprint Pts: 8-7-6-5-4-3-2-1</span><span class="chip neu">Positions gained: +1</span><span class="chip neu">Positions lost: -1</span><span class="chip neu">Overtakes: +1</span><span class="chip neu">Fastest Lap: +5</span><span class="chip neu">DNF/DSQ/NC: -10</span><span class="chip neu">Constructors: qualifying bonus + pit stop + driver total</span></div>`;
-}
-function renderConstructorDashboard(s){
-  const el=document.getElementById('constructorDashboard');
-  if(!el) return;
-  if(!s.constructors.length){ el.innerHTML='<div style="color:var(--muted)">No constructor data yet.</div>'; return; }
-  el.innerHTML=s.constructors.map(c=>`<div class="row"><div class="main"><div class="name">${c.team}</div><div class="meta">Driver total ${c.driverTotal} · Bonus ${c.bonus} · Pit ${c.pitTotal} · DSQ ${c.dsqPenalty}</div></div><div class="pill" style="color:${c.score<0?'#dc2626':'#1f2937'}">${c.score}</div></div>`).join('');
-}
+<div class="progress" id="progress">Card 1 of 20</div>
 
+<div class="card-container">
+  <div class="card" id="card" onclick="flipCard()">
+    <div class="front">
+      <div class="tag" id="frontTag">Topic</div>
+      <div class="question" id="question">Loading...</div>
+      <div class="hint">👆 Click to reveal answer</div>
+    </div>
+    <div class="back">
+      <div class="tag" id="backTag">Answer</div>
+      <div class="answer" id="answer">Loading...</div>
+    </div>
+  </div>
+</div>
 
-function renderLegend(s){
-  const el=document.getElementById('scoreLegend');
-  if(!el) return;
-  const rows=[];
-  if(s.mode==='race'){rows.push(['Qualifying', 'Top 10 quali points']); rows.push(['Race', 'Top 10 race points']); rows.push(['Position change', 'Grid minus finish']); rows.push(['Fastest lap', '+10']); rows.push(['DOTD', '+10']); rows.push(['DNF', '-20']);}
-  else {rows.push(['Sprint', '8-7-6-5-4-3-2-1']); rows.push(['Positions gained/lost', '+1 / -1']); rows.push(['Overtakes', '+1 each']); rows.push(['Fastest lap', '+5']); rows.push(['DOTD', '+10']); rows.push(['DNF/DSQ/NC', '-10']);}
-  el.innerHTML = `<div class="chips">${rows.map(r=>`<span class="chip neu"><strong>${r[0]}:</strong> ${r[1]}</span>`).join('')}</div>`;
-}
-function validateDrivers(list){
-  const issues=[];
-  list.forEach(d=>{ if(d.name==='Unknown') issues.push('A driver name could not be parsed.'); if(!d.team || d.team==='Unknown') issues.push(`${d.name} has an unknown team.`); });
-  const uniq=[...new Set(issues)];
-  const box=document.getElementById('validationSummary');
-  if(box){
-    if(uniq.length){ box.style.display='block'; box.innerHTML='<strong>Validation:</strong><br>'+uniq.map(x=>'• '+x).join('<br>'); }
-    else { box.style.display='none'; box.innerHTML=''; }
-  }
-}
-function downloadJSON(name,data){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
-
-function renderStats(){ const d=document.getElementById('driverStatsList'), c=document.getElementById('constructorStatsList'); const ds={}, cs={}; season.forEach(r=>{r.drivers.forEach(x=>{const team=x.team||x.manualTeam||'Unknown'; if(!ds[x.name]) ds[x.name]={name:x.name,team,total:0,races:0,overtakes:0,podiums:0,top10:0,dnfs:0,fl:0,dotd:0}; const s=ds[x.name]; s.team=team; s.total+=x.score; s.races++; if(x.overtakes)s.overtakes+=x.overtakes; if(x.pos>=1&&x.pos<=3)s.podiums++; if(x.pos>=1&&x.pos<=10)s.top10++; if(x.dnf)s.dnfs++;}); r.constructors.forEach(x=>{if(!cs[x.team]) cs[x.team]={team:x.team,total:0,races:0}; cs[x.team].total+=x.score; cs[x.team].races++;});}); const drv=Object.values(ds).sort((a,b)=>b.total-a.total), con=Object.values(cs).sort((a,b)=>b.total-a.total); if(d) d.innerHTML=drv.length?drv.map(x=>`<div class="row"><div class="main"><div class="name">${x.name}</div><div class="meta">${x.team} · ${x.races} races</div><div class="chips"><span class="chip">Total ${x.total}</span><span class="chip">Avg ${Math.round(x.total/x.races)}</span><span class="chip">Overtakes ${x.overtakes}</span><span class="chip">Podiums ${x.podiums}</span><span class="chip">Top 10 ${x.top10}</span><span class="chip">DNFs ${x.dnfs}</span></div></div></div>`).join(''):'<div style="color:var(--muted)">Save a round to see statistics.</div>'; if(c) c.innerHTML=con.length?con.map(x=>`<div class="row"><div class="main"><div class="name">${x.team}</div><div class="meta">${x.races} rounds</div><div class="chips"><span class="chip">Total ${x.total}</span><span class="chip">Avg ${Math.round(x.total/x.races)}</span></div></div></div>`).join(''):'<div style="color:var(--muted)">Save a round to see constructor stats.</div>'; }
-function renderSeason(){ const dm={}, cm={}; season.forEach(r=>{r.drivers.forEach(d=>{const t=d.team||d.manualTeam||'Unknown'; if(!dm[d.name]) dm[d.name]={name:d.name,team:t,total:0,rounds:0}; dm[d.name].total+=d.score; dm[d.name].rounds++; dm[d.name].team=t;}); r.constructors.forEach(c=>cm[c.team]=(cm[c.team]||0)+c.score);}); const ds=Object.values(dm).sort((a,b)=>b.total-a.total), cs=Object.entries(cm).map(([team,score])=>({team,score})).sort((a,b)=>b.score-a.score); els.seasonDrivers.innerHTML=ds.length?ds.map((d,i)=>`<div class="row"><div class="rank">${i+1}.</div><div class="main"><div class="name"><span class="dot" style="background:${teamColor(d.team)}"></span>${d.name}</div><div class="meta">${d.team} · ${d.rounds} rounds</div></div><div class="pill" style="color:#b45309">${d.total}</div></div>`).join(''):'<div style="color:var(--muted)">No rounds saved yet.</div>'; els.seasonConstructors.innerHTML=cs.length?cs.map((c,i)=>`<div class="bar"><div class="barhead"><span>${i+1}. ${c.team}</span><strong style="font-family:var(--mono)">${c.score}</strong></div><div class="track"><div class="fill" style="width:${Math.min(100,Math.abs(c.score)*3)}%;background:${teamColor(c.team)}"></div></div></div>`).join(''):'<div style="color:var(--muted)">No constructor season data yet.</div>'; els.roundHistory.innerHTML=season.length?season.map((r,i)=>`<div class="row"><div class="rank">${i+1}.</div><div class="main"><div class="name">${r.name}</div><div class="meta">${r.mode==='sprint'?'Sprint':'Race'} · Winner: ${r.drivers[0]?.name||'—'}</div></div><button class="btn g" onclick="deleteRound(${i})">Delete</button></div>`).join(''):'<div style="color:var(--muted)">No rounds saved yet.</div>'; }
-function render(){ const base=getDrivers(); renderFineTune(base); const s=getState(); validateDrivers(s.drivers); els.parsedCount.textContent=s.drivers.length?`${s.drivers.length} drivers parsed in ${s.mode} mode.`:'No drivers parsed yet.'; els.driverBoard.innerHTML=s.drivers.length?s.drivers.map((d,i)=>{const delta=(d.grid!=null&&d.pos!=null)?(d.grid-d.pos):0; const deltaText=delta>0?`+${delta}`:String(delta); const deltaClass=delta>0?'pos':delta<0?'neg':'neu'; return `<div class="row"><div class="rank">${i+1}.</div><div class="main"><div class="name"><span class="dot" style="background:${teamColor(d.manualTeam||d.team)}"></span>${d.displayName||d.name}<span class="chip ${deltaClass}">${deltaText}</span></div><div class="meta">${d.manualTeam||d.team} · Grid ${d.grid??'-'} · Finish ${d.pos??'DNF'}${s.mode==='sprint'?` · OTK ${d.overtakes}`:''}</div><div class="chips">${d.scoring.b.map(x=>`<span class="chip ${x[2]}">${x[0]}: ${x[1]>0?'+':''}${x[1]}</span>`).join('')}</div></div><div class="pill" style="color:${d.score<0?'#dc2626':'#1f2937'}">${d.score>0?'+':''}${d.score}</div></div>`}).join(''):'<div style="color:var(--muted)">Paste race data first.</div>'; els.constructorBoard.innerHTML=s.constructors.length?s.constructors.map((c,i)=>`<div class="bar"><div class="barhead"><span>${i+1}. ${c.team}</span><strong style="font-family:var(--mono);color:${c.score<0?'#dc2626':'#1f2937'}">${c.score}</strong></div><div class="track"><div class="fill" style="width:${Math.min(100,Math.abs(c.score)*3)}%;background:${teamColor(c.team)}"></div></div></div>`).join(''):'<div style="color:var(--muted)">No constructor data yet.</div>'; renderConstructorDashboard(s); els.constructorBreakdown.innerHTML=s.constructors.length?`<table class="table"><thead><tr><th>Team</th><th>Driver total</th><th>Bonus</th><th>Pit</th><th>Total</th></tr></thead><tbody>${s.constructors.map(c=>`<tr><td>${c.team}</td><td>${c.driverTotal}</td><td>${c.bonus}</td><td>${c.pitTotal}</td><td style="color:${c.score<0?'#dc2626':'inherit'}">${c.score}</td></tr>`).join('')}</tbody></table>`:'<div style="color:var(--muted)">No constructor breakdown yet.</div>'; els.pitstopBoard.innerHTML=s.mode==='race'?(s.pitstops.length?`<table class="table"><thead><tr><th>Team</th><th>Time</th><th>Points</th></tr></thead><tbody>${s.pitstops.map(p=>`<tr><td>${p.team}${p.fastest?' • Fastest':''}</td><td>${p.time.toFixed(2)}s</td><td>${p.pts}</td></tr>`).join('')}</tbody></table>`:'<div style="color:var(--muted)">Add pit stop times to score constructors.</div>'):'<div style="color:var(--muted)">Pit stop scoring is disabled in sprint mode.</div>'; const top=s.drivers[0], avg=s.drivers.length?Math.round(s.drivers.reduce((a,d)=>a+d.score,0)/s.drivers.length):0; renderLegend(s); els.raceStats.innerHTML=[['Mode',s.mode==='sprint'?'Sprint':'Normal race'],['Winner',top?.name||'—'],['Top score',`${top?.score??0}`],['Average',`${avg}`],['DNFs',String(s.drivers.filter(d=>d.dnf).length)]].map(([k,v])=>`<div class="row"><div class="main"><div class="name">${k}</div><div class="meta">${v}</div></div></div>`).join(''); renderSeason(); renderStats(); }
-function deleteRound(i){season=season.filter((_,x)=>x!==i); render()} window.deleteRound=deleteRound;
-function setTab(id){document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id)); ['input','results','season','stats','rules'].forEach(x=>{const s=document.getElementById('tab-'+x); if(s) s.classList.toggle('hidden',x!==id)}); if(id==='stats') renderStats(); if(id==='rules') renderRulesTab();}
-document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
-els.previewBtn.onclick=()=>{render(); setTab('results')};
-els.clearBtn.onclick=()=>{manualEdits={}; lastRaceSignature=''; els.raceInput.value=''; els.fastestLapDriver.value=''; if(els.fastestLapDriver.tagName==='SELECT') els.fastestLapDriver.value=''; els.dotdDriver.innerHTML='<option value="">None</option>'; els.pitstopInput.value=''; render()};
-els.saveFineTunes.onclick=()=>render();
-els.saveBtn.onclick=()=>{const s=getState(); validateDrivers(s.drivers); if(!s.drivers.length){alert('No drivers parsed — check your input.'); return;} season.push({name:els.roundName.value.trim()||`Round ${season.length+1}`,mode:els.eventMode.value,drivers:s.drivers.map(d=>({name:d.name,team:d.manualTeam||d.team,score:d.score})),constructors:s.constructors}); render(); setTab('season')};
-[els.raceInput,els.fastestLapDriver,els.pitstopInput,els.dotdDriver,els.eventMode].forEach(el=>el.addEventListener('input',()=>render(el===els.raceInput)));
-render();
-window.__v73init=true; document.getElementById('previewBtn').onclick=()=>{render(); setTab('results')}; document.getElementById('clearBtn').onclick=()=>{manualEdits={}; lastRaceSignature=''; els.raceInput.value=''; els.fastestLapDriver.value=''; els.dotdDriver.value=''; els.pitstopInput.value=''; render()}; document.getElementById('saveFineTunes').onclick=()=>render(); document.getElementById('saveBtn').onclick=()=>{const s=getState(); if(!s.drivers.length){alert('No drivers parsed — check your input.'); return;} season.push({name:els.roundName.value.trim()||`Round ${season.length+1}`,mode:els.eventMode.value,drivers:s.drivers.map(d=>({name:d.name,team:d.manualTeam||d.team,score:d.score})),constructors:s.constructors}); render(); setTab('season')}; const tb=document.getElementById('themeFab'); if(tb){const setTheme=(m)=>{document.body.classList.toggle('light',m==='light'); tb.textContent=m==='light'?'☀️ Light':'🌙 Dark'; localStorage.setItem('f1-theme',m)}; setTheme('light'); tb.onclick=()=>setTheme(document.body.classList.contains('light')?'dark':'light');} </script>
-<script>window.__forceLight=1; document.body.classList.add("light"); const tb=document.getElementById("themeFab"); if(tb){tb.textContent="☀️ Light"; tb.onclick=()=>{document.body.classList.toggle("light"); tb.textContent=document.body.classList.contains("light")?"☀️ Light":"🌙 Dark"; localStorage.setItem("f1-theme",document.body.classList.contains("light")?"light":"dark");};}</script>
+<div class="buttons">
+  <button class="btn-prev" onclick="prevCard()">← Previous</button>
+  <button class="btn-flip" onclick="flipCard()">Flip Card</button>
+  <button class="btn-next" onclick="nextCard()">Next →</button>
+</div>
 
 <script>
-(function(){
-  const themeBtn=document.getElementById('themeFab');
-  document.body.classList.add('light');
-  if(themeBtn){
-    themeBtn.textContent='☀️ Light';
-    themeBtn.onclick=()=>{
-      document.body.classList.toggle('light');
-      themeBtn.textContent=document.body.classList.contains('light')?'☀️ Light':'🌙 Dark';
-      localStorage.setItem('f1-theme',document.body.classList.contains('light')?'light':'dark');
-    };
+const allCards = [
+  {
+    category: "Entities",
+    question: "What is a Strong Entity? Give an example from FiaFox.",
+    answer: "A strong entity can exist on its own without depending on another table. Examples in FiaFox: customers, products, suppliers, categories — they all exist independently."
+  },
+  {
+    category: "Entities",
+    question: "What is a Weak Entity? Give an example from FiaFox.",
+    answer: "A weak entity cannot exist without a parent entity. In FiaFox: order_items cannot exist without an order, and reviews cannot exist without both a customer and a product."
+  },
+  {
+    category: "Entities",
+    question: "Why is order_items a weak entity in FiaFox?",
+    answer: "Because order_items is dependent on orders and cannot exist without one. If the order is deleted, all its items are deleted too — which is why we used ON DELETE CASCADE on the foreign key."
+  },
+  {
+    category: "ERD",
+    question: "What is the relationship between orders and order_items?",
+    answer: "One-to-Many (1:M). One order can contain many order items — for example, one order might include a phone, a case, and headphones as three separate order_items."
+  },
+  {
+    category: "ERD",
+    question: "What does ON DELETE CASCADE mean in your database?",
+    answer: "It means if a parent record is deleted, all related child records are automatically deleted too. In FiaFox, if an order is deleted, all its order_items are automatically removed."
+  },
+  {
+    category: "ERD",
+    question: "What is a Foreign Key? Give an example from FiaFox.",
+    answer: "A foreign key is a column that links one table to another. Example: customer_id in the orders table is a foreign key that references the customer_id primary key in the customers table."
+  },
+  {
+    category: "ERD",
+    question: "How many tables does FiaFox have and what are they?",
+    answer: "7 tables: customers, categories, suppliers, products, orders, order_items, and reviews."
+  },
+  {
+    category: "Normalisation",
+    question: "What is First Normal Form (1NF)?",
+    answer: "Every column must have atomic (single) values, no repeating groups, and every row must be unique. FiaFox satisfies this — for example, instead of storing multiple products in one order row, we use a separate order_items table."
+  },
+  {
+    category: "Normalisation",
+    question: "What is Second Normal Form (2NF)?",
+    answer: "Must be in 1NF with no partial dependencies — every non-key attribute must depend on the entire primary key. FiaFox satisfies this because all tables use single surrogate primary keys, so partial dependencies cannot exist."
+  },
+  {
+    category: "Normalisation",
+    question: "What is Third Normal Form (3NF)?",
+    answer: "Must be in 2NF with no transitive dependencies — every attribute must depend directly on the primary key, not on other non-key attributes. FiaFox satisfies this — all attributes in each table depend only on their primary key."
+  },
+  {
+    category: "Normalisation",
+    question: "Why did your FiaFox database not need changes during normalisation?",
+    answer: "Because it was designed with normalisation in mind from the start. Key decisions like separating order_items from orders, and isolating categories and suppliers into their own tables, meant all three normal forms were already satisfied."
+  },
+  {
+    category: "SQL Queries",
+    question: "What is a Non-Correlated Subquery? What does Q1 do in FiaFox?",
+    answer: "A non-correlated subquery runs independently of the outer query — it executes once and returns a single value. Q1 finds all products priced above the overall average price by calculating AVG(price) once in the inner query."
+  },
+  {
+    category: "SQL Queries",
+    question: "What is a Correlated Subquery? What does Q2 do in FiaFox?",
+    answer: "A correlated subquery references the outer query and runs once per row. Q2 finds each customer's most recent order date — the inner query references the current customer's ID from the outer query, so it runs once per customer."
+  },
+  {
+    category: "SQL Queries",
+    question: "What is a CTE (WITH query)? What does Q3 do in FiaFox?",
+    answer: "A CTE (Common Table Expression) creates a temporary named result set you can reference in the main query. Q3 calculates total revenue per category in the CTE, then ranks them by revenue in the outer query."
+  },
+  {
+    category: "SQL Queries",
+    question: "What is a Window Function? What does Q4 do in FiaFox?",
+    answer: "A window function performs calculations across rows related to the current row without collapsing them. Q4 uses RANK() to rank customers by total spending — so you can see who FiaFox's top spenders are."
+  },
+  {
+    category: "SQL Queries",
+    question: "What does the Q5 Running Total query do in FiaFox?",
+    answer: "It calculates cumulative revenue month by month using SUM() OVER (ORDER BY month). This shows FiaFox's total revenue building up over time, which helps identify growth trends."
+  },
+  {
+    category: "Triggers & Procedures",
+    question: "What does your Q8 trigger do in FiaFox?",
+    answer: "The trigger trg_update_stock fires automatically after a new order_item is inserted. It reduces the product's stock_quantity by the quantity ordered, and logs the change in the stock_log table — keeping inventory accurate automatically."
+  },
+  {
+    category: "Triggers & Procedures",
+    question: "What does your Q7 stored function do in FiaFox?",
+    answer: "The function get_customer_summary() takes a customer_id and returns that customer's total orders, total spend, average order value, first order date and latest order date — useful for customer service staff."
+  },
+  {
+    category: "Transactions & Security",
+    question: "What is a Transaction? Explain BEGIN / COMMIT / ROLLBACK.",
+    answer: "A transaction groups multiple SQL statements into one atomic operation. BEGIN starts it, COMMIT saves all changes permanently, and ROLLBACK undoes everything if something goes wrong. In FiaFox this ensures an order and its items are always inserted together or not at all."
+  },
+  {
+    category: "Transactions & Security",
+    question: "What are your two PostgreSQL roles and what can they do?",
+    answer: "fiafox_admin has full privileges on all tables. fiafox_staff has read-only SELECT access to customers, products, orders, categories and order_items — but is explicitly REVOKED from accessing reviews and stock_log."
+  },
+  {
+    category: "Transactions & Security",
+    question: "What is MVCC and why is it relevant to FiaFox?",
+    answer: "MVCC stands for Multi-Version Concurrency Control. PostgreSQL uses it so readers never block writers and writers never block readers. This is critical for FiaFox where multiple customers may be placing orders simultaneously — it keeps data accurate without slowing down."
+  },
+  {
+    category: "Performance",
+    question: "What indexes did you create in Q11 and why?",
+    answer: "Three indexes: idx_orders_customer_id on orders(customer_id), idx_order_items_order_id on order_items(order_id), and idx_order_items_product_id on order_items(product_id). These speed up JOIN operations by allowing PostgreSQL to use Index Scans instead of slow Sequential Scans."
+  },
+  {
+    category: "Performance",
+    question: "What is the difference between a Sequential Scan and an Index Scan in EXPLAIN ANALYZE?",
+    answer: "A Sequential Scan reads every row in the table one by one — slow for large tables. An Index Scan uses the index to jump directly to the relevant rows — much faster. After adding indexes in Q11, PostgreSQL switched from Sequential to Index Scans."
+  },
+  {
+    category: "Project",
+    question: "Why did you choose FiaFox as your project?",
+    answer: "I chose FiaFox because I have experience working alongside a real business called Bia Box, which gave me insight into how small online retail businesses operate. I wanted my database to closely reflect a real world e-commerce system with customers, suppliers, products, orders and analytics."
   }
-  const previewBtn=document.getElementById('previewBtn');
-  const clearBtn=document.getElementById('clearBtn');
-  const saveFine=document.getElementById('saveFineTunes');
-  const saveBtn=document.getElementById('saveBtn');
-  if(previewBtn) previewBtn.onclick=()=>{ try{ render(); setTab('results'); }catch(e){ alert('Preview error: '+e.message); } };
-  if(clearBtn) clearBtn.onclick=()=>{ try{ manualEdits={}; lastRaceSignature=''; document.getElementById('raceInput').value=''; document.getElementById('fastestLapDriver').value=''; document.getElementById('dotdDriver').value=''; document.getElementById('pitstopInput').value=''; render(); }catch(e){ alert('Clear error: '+e.message); } };
-  if(saveFine) saveFine.onclick=()=>{ try{ render(); }catch(e){ alert('Save fine-tune error: '+e.message); } };
-  if(saveBtn) saveBtn.onclick=()=>{ try{ const s=getState(); if(!s.drivers.length){ alert('No drivers parsed — check your input.'); return; } season.push({name:document.getElementById('roundName').value.trim()||`Round ${season.length+1}`,mode:document.getElementById('eventMode').value,drivers:s.drivers.map(d=>({name:d.name,team:d.manualTeam||d.team,score:d.score})),constructors:s.constructors}); render(); setTab('season'); }catch(e){ alert('Save season error: '+e.message); } };
-  const tabs=document.querySelectorAll('.tab'); tabs.forEach(b=>b.onclick=()=>{ try{ setTab(b.dataset.tab); if(b.dataset.tab==='stats' && typeof renderStats==='function') renderStats(); }catch(e){ alert('Tab error: '+e.message); } });
-})();
+];
+
+let currentCards = [...allCards];
+let currentIndex = 0;
+let isFlipped = false;
+let studied = new Set();
+let activeCategory = "All";
+
+const categories = ["All", ...new Set(allCards.map(c => c.category))];
+
+function buildCategoryFilter() {
+  const container = document.getElementById("catFilter");
+  categories.forEach(cat => {
+    const btn = document.createElement("button");
+    btn.className = "cat-btn" + (cat === "All" ? " active" : "");
+    btn.textContent = cat;
+    btn.onclick = () => filterCategory(cat);
+    container.appendChild(btn);
+  });
+}
+
+function filterCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll(".cat-btn").forEach(b => b.classList.remove("active"));
+  event.target.classList.add("active");
+  currentCards = cat === "All" ? [...allCards] : allCards.filter(c => c.category === cat);
+  currentIndex = 0;
+  isFlipped = false;
+  document.getElementById("card").classList.remove("flipped");
+  updateCard();
+}
+
+function updateCard() {
+  const card = currentCards[currentIndex];
+  document.getElementById("question").textContent = card.question;
+  document.getElementById("answer").innerHTML = card.answer.replace(/`([^`]+)`/g, '<code>$1</code>');
+  document.getElementById("frontTag").textContent = card.category;
+  document.getElementById("backTag").textContent = "✅ Answer";
+  document.getElementById("progress").textContent = `Card ${currentIndex + 1} of ${currentCards.length}`;
+  document.getElementById("studiedCount").textContent = studied.size;
+  document.getElementById("totalCount").textContent = allCards.length;
+}
+
+function flipCard() {
+  isFlipped = !isFlipped;
+  document.getElementById("card").classList.toggle("flipped");
+  if (isFlipped) studied.add(currentIndex + "_" + activeCategory);
+  document.getElementById("studiedCount").textContent = studied.size;
+}
+
+function nextCard() {
+  currentIndex = (currentIndex + 1) % currentCards.length;
+  isFlipped = false;
+  document.getElementById("card").classList.remove("flipped");
+  updateCard();
+}
+
+function prevCard() {
+  currentIndex = (currentIndex - 1 + currentCards.length) % currentCards.length;
+  isFlipped = false;
+  document.getElementById("card").classList.remove("flipped");
+  updateCard();
+}
+
+buildCategoryFilter();
+updateCard();
 </script>
-
 </body>
 </html>
